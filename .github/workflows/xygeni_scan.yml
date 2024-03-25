@@ -60,6 +60,11 @@ jobs:
           ls -l
 
 
+      #- name: Copying malicious files  
+      #  run: |
+      #    cp ./malicious_files/* ./octokit
+
+
       # Runs a set of commands using the runners shell 
       - name: Download Xygeni Scanner 
         run: |
