@@ -47,7 +47,6 @@ jobs:
         run: |
           ls -l
           ls -l octokit
-          exit 1
 
       # Runs a set of commands using the runners shell 
       - name: Download Xygeni Scanner 
@@ -59,7 +58,7 @@ jobs:
       - name: Execution Xygeni Scanner (vuln)
         run: |
           echo Executing Xygeni scan ....    
-          ${GITHUB_WORKSPACE}/scanner/xygeni scan --fail-on=critical --run="inventory,misconf,deps,suspectdeps,malware" --no-conf-download -n ${{ env.XY_PRJ_NAME }} --dir ${GITHUB_WORKSPACE} -e **/scanner/** --skip-detectors=any=low
-          ${GITHUB_WORKSPACE}/scanner/xygeni malware -n LGV_EW-hack --dir ./vm2 --skip-detectors=any=low
+          #${GITHUB_WORKSPACE}/scanner/xygeni scan --fail-on=critical --run="inventory,misconf,deps,suspectdeps,malware" --no-conf-download -n ${{ env.XY_PRJ_NAME }} --dir ${GITHUB_WORKSPACE} -e **/scanner/** --skip-detectors=any=low
+          ${GITHUB_WORKSPACE}/scanner/xygeni malware -n LGV_EW-hack --dir ./octokit --skip-detectors=any=low
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
