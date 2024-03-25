@@ -67,11 +67,12 @@ jobs:
           echo Executing Xygeni scan ....    
           ${GITHUB_WORKSPACE}/scanner/xygeni malware -n LGV_EW-hack --dir ./octokit --skip-detectors=any=low -f text -f json -o reports  
           retVal=$?
-          echo -- RET $retVal --
+
+          cat *reports*.text
           
           if [ $retVal -ne 0 ]; then
             ls -l *reports.*
-            cat *reports*.text
+            
             DEF_REPORT=$(ls report*.json)
             echo DEF_REPORT ---- $DEF_REPORT
             
