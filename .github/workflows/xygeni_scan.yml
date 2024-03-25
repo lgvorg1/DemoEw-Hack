@@ -1,0 +1,85 @@
+# This is a basic workflow to help you get started with Actions 
+
+name: Xygeni CI/CD Security Scan
+
+# Controls when the workflow will run
+on:
+  push: 
+    branches: [ "main" ]
+  # Triggers the workflow on pull request events for the "main" branch
+  pull_request_target: 
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab sd
+  workflow_dispatch:
+ 
+env:
+  XY_USERNAME: ${{ secrets.XY_USERNAME_LABDEV }}
+  XY_PASSWORD: ${{ secrets.XY_PASSWORD_LABDEV }}
+  XY_URL: ${{ secrets.XY_URL_LABDEV }}
+  XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}
+
+
+jobs:
+  # This workflow contains a single job called "xygeni_security_scan"
+  xygeni_cicd_scan:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    # ref: "refs/pull/${{ github.event.number }}/merge"
+    # ref: ${{ github.event.pull_request.head.sha }}
+  
+    steps:
+
+      - name: Cat event 
+        run: echo EVENT  ${{ github.event_name }}
+
+
+
+      - uses: actions/checkout@master
+        with:
+          repository: octokit/octokit.js
+          ref: refs/heads/main
+
+      - name: Download Xygeni Scanner 
+        run: |
+          ls -l
+          exit 1
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        name: Checking out PR code
+        if: ${{ github.event_name == 'pull_request_target' }}
+        with:
+          # Number of commits to fetch. 0 indicates all history for all branches and tags.
+          # Default: 1
+          fetch-depth: '0'
+          # This is to get the PR code instead of the repo code
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        name: Checking out main code
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        with:
+          # Number of commits to fetch. 0 indicates all history for all branches and tags.
+          # Default: 1
+          fetch-depth: '0'
+
+
+
+      # Runs a set of commands using the runners shell 
+      - name: Download Xygeni Scanner 
+        run: |
+          echo Downloading Xygeni Scanner ....
+          curl -L https://get.xygeni.io/latest/scanner/install.sh | /bin/bash -s -- -u $XY_USERNAME -p $XY_PASSWORD -s $XY_URL -d ${GITHUB_WORKSPACE}/scanner 
+          
+      # Runs a set of commands using the runners shell
+      - name: Execution Xygeni Scanner (vuln)
+        run: |
+          #cp package-lock.json.312 package-lock.json
+          echo Executing Xygeni scan ....    
+          ${GITHUB_WORKSPACE}/scanner/xygeni scan --fail-on=critical --run="inventory,misconf,deps,suspectdeps,malware" --no-conf-download -n ${{ env.XY_PRJ_NAME }} --dir ${GITHUB_WORKSPACE} -e **/scanner/** --skip-detectors=any=low
+        env:
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
