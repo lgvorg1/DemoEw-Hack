@@ -82,7 +82,10 @@ jobs:
             echo "======================================="
 
             text="Malware detected by Early Warning !!!! "
-            echo "::error ::$text"
+            text2="hola perola"
+            text3="adios"
+            echo "::error file=app.js,line=10,col=15::$text"
+            echo "::error $text2 :: $text3 ::$text"
          
             #cat $DEF_REPORT
             #exit 0
