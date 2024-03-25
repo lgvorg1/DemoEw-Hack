@@ -38,6 +38,7 @@ jobs:
 
 
       - uses: actions/checkout@master
+        name: Checking out octokit code
         with:
           repository: octokit/octokit.js
           ref: refs/heads/main
