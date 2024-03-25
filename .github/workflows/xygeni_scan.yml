@@ -81,7 +81,7 @@ jobs:
             echo " => Dep. Version: $PKG_VERSION"
             echo "======================================="
          
-            cat $DEF_REPORT
+            #cat $DEF_REPORT
             #exit 0
             curl --location --request POST https://apidev.xygeni.io/deps-doctor-service/report/upload/malware \
               --header "Authorization: Bearer $XY_TOKEN" \
