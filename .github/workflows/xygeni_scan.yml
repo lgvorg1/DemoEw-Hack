@@ -84,8 +84,8 @@ jobs:
             text="Malware detected by Early Warning !!!! "
             text2="hola perola"
             text3="adios"
-            echo "::error file=app.js,line=10,col=15::$text"
-            echo "::error $text2 :: $text3 ::$text"
+            #echo "::error file=app.js,line=10,col=15::$text"
+            echo "::error $text2::$text3::$text"
          
             #cat $DEF_REPORT
             #exit 0
