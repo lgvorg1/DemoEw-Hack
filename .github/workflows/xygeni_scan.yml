@@ -52,7 +52,7 @@ jobs:
 
       #- name: Copying malicious files  
       #  run: |
-      #    exit 0
+      #    echo "Copying malicious files !!!"
       #    cp ./malicious_files/* ./octokit
 
       # Runs a set of commands using the runners shell
