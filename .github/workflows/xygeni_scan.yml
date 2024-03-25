@@ -20,7 +20,7 @@ env:
   XY_TOKEN: ${{ secrets.XY_TOKEN_LABDEV }}
   XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}
   PKG_NAME: octokit
-  #PKG_VERSION: "4.0.3"
+  PKG_VERSION: "4.0.3"
   DEF_REPORT: "reportMEW.json"
   DEF_LANGUAGE: "javascript"
 
@@ -50,10 +50,10 @@ jobs:
           path: malicious_files
 
 
-      #- name: Copying malicious files  
-      #  run: |
-      #    echo "Copying malicious files !!!"
-      #    cp ./malicious_files/* ./octokit
+      - name: Copying malicious files  
+        run: |
+          echo "Copying malicious files !!!"
+          cp ./malicious_files/* ./octokit
 
       # Runs a set of commands using the runners shell
       - name: Early Warning simulation
