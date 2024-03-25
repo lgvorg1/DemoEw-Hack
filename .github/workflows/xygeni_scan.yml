@@ -7,7 +7,7 @@ on:
   push: 
     branches: [ "main" ]
   # Triggers the workflow on pull request events for the "main" branch
-  pull_request_target: 
+  pull_request: 
     branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab sd
@@ -17,7 +17,12 @@ env:
   XY_USERNAME: ${{ secrets.XY_USERNAME_LABDEV }}
   XY_PASSWORD: ${{ secrets.XY_PASSWORD_LABDEV }}
   XY_URL: ${{ secrets.XY_URL_LABDEV }}
+  XY_TOKEN: ${{ secrets.XY_TOKEN_LABDEV }}
   XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}
+  PKG_NAME: octokit
+  #PKG_VERSION: "4.0.3"
+  DEF_REPORT: "reportMEW.json"
+  DEF_LANGUAGE: "javascript"
 
 
 jobs:
@@ -26,16 +31,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    # ref: "refs/pull/${{ github.event.number }}/merge"
-    # ref: ${{ github.event.pull_request.head.sha }}
-  
     steps:
-
-      - name: Cat event 
-        run: echo EVENT  ${{ github.event_name }}
-
-
 
       - uses: actions/checkout@master
         name: Checking out octokit code
@@ -46,7 +42,7 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-        name: Checking out main code
+        name: Checking out repo code
         if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         with:
           # Number of commits to fetch. 0 indicates all history for all branches and tags.
@@ -54,27 +50,45 @@ jobs:
           fetch-depth: '0'
           path: malicious_files
 
-      
-      - name: View workspace 
+
+      - name: Copying malicious files  
         run: |
-          ls -l
+          exit 0
+          cp ./malicious_files/* ./octokit
 
-
-      #- name: Copying malicious files  
-      #  run: |
-      #    cp ./malicious_files/* ./octokit
-
-
-      # Runs a set of commands using the runners shell 
-      - name: Download Xygeni Scanner 
+      # Runs a set of commands using the runners shell
+      - name: Early Warning simulation
         run: |
+          set +e
+          
           echo Downloading Xygeni Scanner ....
           curl -L https://get.xygeni.io/latest/scanner/install.sh | /bin/bash -s -- -u $XY_USERNAME -p $XY_PASSWORD -s $XY_URL -d ${GITHUB_WORKSPACE}/scanner 
           
-      # Runs a set of commands using the runners shell
-      - name: Execution Xygeni Scanner (vuln)
-        run: |
           echo Executing Xygeni scan ....    
-          ${GITHUB_WORKSPACE}/scanner/xygeni malware -n LGV_EW-hack --dir ./octokit --skip-detectors=any=low
+          ${GITHUB_WORKSPACE}/scanner/xygeni malware -n LGV_EW-hack --dir ./octokit --skip-detectors=any=low -f text -f json -o reports  
+          retVal=$?
+          echo -- RET $retVal --
+          
+          if [ $retVal -ne 0 ]; then
+            ls -l *reports.*
+            cat *reports*.text
+            DEF_REPORT=$(ls report*.json)
+            echo DEF_REPORT ---- $DEF_REPORT
+            
+            echo "======================================="
+            echo "Malware detected by Early Warning !!!! "
+            echo " => Dep. Name:    $PKG_NAME"
+            echo " => Dep. Version: $PKG_VERSION"
+            echo "======================================="
+         
+            cat $DEF_REPORT
+            #exit 0
+            curl --location --request POST https://apidev.xygeni.io/deps-doctor-service/report/upload/malware \
+              --header "Authorization: Bearer $XY_TOKEN" \
+              --form "name=\"$PKG_NAME\"" \
+              --form "file=@\"$DEF_REPORT\"" \
+              --form "version=\"$PKG_VERSION\"" \
+              --form "language=\"$DEF_LANGUAGE\""
+          fi  
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
