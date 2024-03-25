@@ -41,33 +41,13 @@ jobs:
         with:
           repository: octokit/octokit.js
           ref: refs/heads/main
+          path: octokit
 
       - name: Download Xygeni Scanner 
         run: |
           ls -l
+          ls -l octokit
           exit 1
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-        name: Checking out PR code
-        if: ${{ github.event_name == 'pull_request_target' }}
-        with:
-          # Number of commits to fetch. 0 indicates all history for all branches and tags.
-          # Default: 1
-          fetch-depth: '0'
-          # This is to get the PR code instead of the repo code
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-        name: Checking out main code
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
-        with:
-          # Number of commits to fetch. 0 indicates all history for all branches and tags.
-          # Default: 1
-          fetch-depth: '0'
-
-
 
       # Runs a set of commands using the runners shell 
       - name: Download Xygeni Scanner 
@@ -78,8 +58,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Execution Xygeni Scanner (vuln)
         run: |
-          #cp package-lock.json.312 package-lock.json
           echo Executing Xygeni scan ....    
           ${GITHUB_WORKSPACE}/scanner/xygeni scan --fail-on=critical --run="inventory,misconf,deps,suspectdeps,malware" --no-conf-download -n ${{ env.XY_PRJ_NAME }} --dir ${GITHUB_WORKSPACE} -e **/scanner/** --skip-detectors=any=low
+          ${GITHUB_WORKSPACE}/scanner/xygeni malware -n LGV_EW-hack --dir ./vm2 --skip-detectors=any=low
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
