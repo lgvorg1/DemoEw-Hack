@@ -83,7 +83,7 @@ jobs:
 
             
             mw="$PKG_NAME-$PKG_VERSION"
-            text="Malware detected by Early Warning ($mw)!!!! "
+            text="Malware detected by Early Warning ($mw) !!!! "
             #echo "::error file=app.js,line=10,col=15::$text"
             echo "::error $mw::$text"
          
