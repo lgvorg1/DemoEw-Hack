@@ -80,6 +80,9 @@ jobs:
             echo " => Dep. Name:    $PKG_NAME"
             echo " => Dep. Version: $PKG_VERSION"
             echo "======================================="
+
+            text="Malware detected by Early Warning !!!! "
+            echo "::error ::$text"
          
             #cat $DEF_REPORT
             #exit 0
