@@ -82,10 +82,9 @@ jobs:
             echo "======================================="
 
             text="Malware detected by Early Warning !!!! "
-            mw="hola perola"
-            text3="$PKG_NAME-$PKG_VERSION"
+            mw="$PKG_NAME-$PKG_VERSION"
             #echo "::error file=app.js,line=10,col=15::$text"
-            echo "::error $text3::$text"
+            echo "::error $mw::$text"
          
             #cat $DEF_REPORT
             #exit 0
