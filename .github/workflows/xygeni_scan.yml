@@ -27,7 +27,7 @@ env:
 
 jobs:
   # This workflow contains a single job called "xygeni_security_scan"
-  xygeni_cicd_scan:
+  build_and_upload:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
