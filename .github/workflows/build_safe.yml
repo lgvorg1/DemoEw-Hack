@@ -8,10 +8,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab sd
   workflow_dispatch:
     inputs:
-      dep-malware:
-        type: boolean
-        description: Incluir Malware
-        default: false
+      #dep-malware:
+      #  type: boolean
+      #  description: Incluir Malware
+      #  default: false
       dep-name:
         description: 'Dep. Name'
         required: true
@@ -30,7 +30,7 @@ env:
   XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}
   PKG_NAME: ${{ github.event.inputs.dep-name }}
   PKG_VERSION: ${{ github.event.inputs.dep-version }}
-  PKG_MALWARE: ${{ github.event.inputs.dep-malware }}
+  #PKG_MALWARE: ${{ github.event.inputs.dep-malware }}
   DEF_REPORT: "reportMEW.json"
   DEF_LANGUAGE: "javascript"
 
