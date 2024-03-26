@@ -20,13 +20,7 @@ on:
         description: 'Dep. Version'
         required: true
         default: '3.1.2'  
-      dep-status:
-        type: choice
-        description: New Status
-        options: 
-        - confirmed_by_xygeni
-        - confirmed_malware
-        - safe
+
  
 env:
   XY_USERNAME: ${{ secrets.XY_USERNAME_LABDEV }}
