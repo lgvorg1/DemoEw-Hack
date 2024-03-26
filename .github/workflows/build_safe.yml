@@ -53,7 +53,24 @@ jobs:
           echo "::notice $mw::$text"  
           text="Running Early Warning on $mw !!!! "
           echo "::notice $mw::$text"
-  
+
+  #        
+  sending_notification_and_registering_malware:
+    needs: early_warning_simulation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Building safe dependency
+        run: |
+          curl --location --request POST https://apidev.xygeni.io/deps-doctor-service/report/upload/malware \
+            --header "Authorization: Bearer $XY_TOKEN" \
+            --form "name=\"$PKG_NAME\"" \
+            --form "file=@\"$DEF_REPORT\"" \
+            --form "version=\"$PKG_VERSION\"" \
+            --form "language=\"$DEF_LANGUAGE\""
+
+
+          
   early_warning_simulation:
     # The type of runner that the job will run on
     needs: build_and_publish
@@ -118,12 +135,12 @@ jobs:
          
             #cat $DEF_REPORT
             #exit 0
-            curl --location --request POST https://apidev.xygeni.io/deps-doctor-service/report/upload/malware \
-              --header "Authorization: Bearer $XY_TOKEN" \
-              --form "name=\"$PKG_NAME\"" \
-              --form "file=@\"$DEF_REPORT\"" \
-              --form "version=\"$PKG_VERSION\"" \
-              --form "language=\"$DEF_LANGUAGE\""
+            #curl --location --request POST https://apidev.xygeni.io/deps-doctor-service/report/upload/malware \
+            #  --header "Authorization: Bearer $XY_TOKEN" \
+            #  --form "name=\"$PKG_NAME\"" \
+            #  --form "file=@\"$DEF_REPORT\"" \
+            #  --form "version=\"$PKG_VERSION\"" \
+            #  --form "language=\"$DEF_LANGUAGE\""
             
               exit $retVal
           fi  
