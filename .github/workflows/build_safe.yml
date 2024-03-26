@@ -36,9 +36,27 @@ env:
 
 
 jobs:
+
+  # Simulation of Building and Publishing Malware
+  build_and_publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Building safe dependency
+        run: |
+          echo "Simulation of building"
+      - name: Publishing dependency
+        run: |
+          echo "Simulation of publishing"
+          mw="$PKG_NAME-$PKG_VERSION"
+          text="Building safe $mw and Publishing ... "
+          echo "::notice $mw::$text"  
+          text="Running Early Warning on $mw !!!! "
+          echo "::notice $mw::$text"
   
-  build_safe:
+  early_warning_simulation:
     # The type of runner that the job will run on
+    needs: build_and_publish
     runs-on: ubuntu-latest
 
     steps:
