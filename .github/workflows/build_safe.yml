@@ -50,7 +50,6 @@ jobs:
           echo PKG_VERSION $PKG_VERSION
           echo PKG_MALWARE $PKG_MALWARE
 
-          exit 1
 
       - uses: actions/checkout@master
         name: Checking out octokit code
@@ -69,14 +68,16 @@ jobs:
           path: malicious_files
 
 
-      #- name: Copying malicious files  
-      #  run: |
-      #    echo "Copying malicious files !!!"
-      #    cp ./malicious_files/* ./octokit
+      - name: Copying malicious files  
+        if: ${{ github.event.inputs.dep-malware == 'true' }}
+        run: |
+          echo "Copying malicious files !!!"
+          cp ./malicious_files/* ./octokit
 
       # Runs a set of commands using the runners shell
       - name: Early Warning simulation
         run: |
+          exit 1
           set +e
           
           echo Downloading Xygeni Scanner ....
