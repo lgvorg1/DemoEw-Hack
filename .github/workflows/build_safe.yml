@@ -69,7 +69,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Early Warning simulation
         run: |
-          exit 1
           set +e
           
           echo Downloading Xygeni Scanner ....
