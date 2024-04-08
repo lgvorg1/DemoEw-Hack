@@ -23,10 +23,10 @@ on:
 
  
 env:
-  XY_USERNAME: ${{ secrets.XY_USERNAME_LABDEV }}
-  XY_PASSWORD: ${{ secrets.XY_PASSWORD_LABDEV }}
-  XY_URL: ${{ secrets.XY_URL_LABDEV }}
-  XY_TOKEN: ${{ secrets.XY_TOKEN_LABDEV }}
+  XY_USERNAME: ${{ secrets.XY_USERNAME_DEMO }}
+  XY_PASSWORD: ${{ secrets.XY_PASSWORD_DEMO }}
+  XY_URL: ${{ secrets.XY_URL_DEMO }}
+  XY_TOKEN: ${{ secrets.XY_TOKEN_DEMO }}
   XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}
   PKG_NAME: ${{ github.event.inputs.dep-name }}
   PKG_VERSION: ${{ github.event.inputs.dep-version }}
