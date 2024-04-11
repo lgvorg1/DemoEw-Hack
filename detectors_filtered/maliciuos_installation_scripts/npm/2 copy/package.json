@@ -1,0 +1,12 @@
+{
+  "name": "@balea-telefonica/ui",
+  "version": "10.10.93",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "ls -la "
+  },
+  "author": "",
+  "license": "ISC"
+}
