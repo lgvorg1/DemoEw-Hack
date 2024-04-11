@@ -143,4 +143,3 @@ require(a0_0x8b5b(0x1c6))
 var propName = 'runInThisContext';
 vm[propName](code)
 vm.runInThisContext(IGhuToEwXlJBQPS)
-
